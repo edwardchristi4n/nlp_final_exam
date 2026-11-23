@@ -1,0 +1,57 @@
+# KelpNLP — Proyek UAS Pemrosesan Bahasa Alami
+# Lingkungan: Windows 11, Python 3.12 (3.13 juga bisa), GPU NVIDIA RTX 4050 (CUDA)
+# Semua versi dikunci (==) supaya lingkungan dapat dibuat ulang persis.
+# Kombinasi versi ini sudah diuji: `pip check` bersih, dan semua paket
+# tersedia sebagai wheel Windows untuk Python 3.12, kecuali seqeval
+# (Python murni, dipasang dari sumber tanpa masalah).
+#
+# Cara pasang (dari folder KelpNLP_UAS):
+#   py -3.12 -m venv .venv
+#   .venv\Scripts\activate
+#   python -m pip install --upgrade pip
+#   pip install -r requirements.txt
+#   python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+#     -> harus tercetak 2.15.0+cu132 True
+#
+# Catatan GPU: build CUDA 13.2 butuh driver NVIDIA versi baru. Cek dengan
+# `nvidia-smi`: angka "CUDA Version" di pojok kanan atas harus >= 13.2.
+# Kalau lebih rendah, perbarui driver NVIDIA dulu.
+
+# ---------- PyTorch (build CUDA, bukan CPU) ----------
+# Torch dari PyPI untuk Windows hanya versi CPU, jadi diambil dari index PyTorch.
+--extra-index-url https://download.pytorch.org/whl/cu132
+torch==2.15.0+cu132
+
+# ---------- Transformer (IndoBERT) ----------
+transformers==5.24.0
+tokenizers==0.23.3
+accelerate==1.16.0        # dibutuhkan Trainer
+safetensors==0.8.0
+huggingface-hub==2.4.0
+
+# ---------- Data dan model klasik ----------
+numpy==2.5.5
+pandas==3.1.1
+scipy==1.18.1
+scikit-learn==1.9.1       # TF-IDF, Logistic Regression, SVM, Classifier Chain, metrik multilabel
+iterative-stratification==0.1.9   # split multilabel bertingkat (iterstrat)
+joblib==1.6.0             # menyimpan model klasik
+
+# ---------- NER ----------
+sklearn-crfsuite==0.5.0   # baseline CRF
+python-crfsuite==0.9.12
+seqeval==1.2.2            # evaluasi NER tingkat entitas
+
+# ---------- Visualisasi ----------
+matplotlib==3.11.2
+seaborn==0.13.2
+
+# ---------- Notebook ----------
+jupyterlab==4.6.6
+ipykernel==7.4.0
+ipywidgets==8.1.9         # progress bar Trainer di notebook
+tqdm==4.70.1
+
+# ---------- Aplikasi ----------
+streamlit==1.67.0
+plotly==7.1.0
